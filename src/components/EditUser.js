@@ -1,20 +1,39 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
+import {url} from './../App'
 
-function EditUser(props) {
+function EditUser() {
   let params = useParams();
-  let [firstName,setFName] = useState(props.data.user[params.id].firstName)
-  let [lastName,setLName] = useState(props.data.user[params.id].lastName)
-  let [email,setEmail] = useState(props.data.user[params.id].email)
-  let [dob,setDOB] = useState(props.data.user[params.id].dob)
-  let [mobile,setMobile] = useState(props.data.user[params.id].mobile)
-  let [location,setLocation] = useState(props.data.user[params.id].location)
+
+  // window.sessionStorage.setItem('data',"I am Session Storage")
+
+  let [firstName,setFName] = useState("")
+  let [lastName,setLName] = useState("")
+  let [email,setEmail] = useState("")
+  let [dob,setDOB] = useState("")
+  let [mobile,setMobile] = useState("")
+  let [location,setLocation] = useState("")
+
+  useEffect(()=>{
+    getData();
+  },[])
+
+  let getData = async() =>{
+    let res = await axios.get(`${url}/${params.id}`)
+    setFName(res.data.firstName)
+    setLName(res.data.lastName)
+    setEmail(res.data.email)
+    setDOB(res.data.dob)
+    setMobile(res.data.mobile)
+    setLocation(res.data.location)
+  }
 
   let navigate = useNavigate()
-  let handleSubmit = ()=>{
+  let handleSubmit = async()=>{
     let data = {
       firstName,
       lastName,
@@ -23,14 +42,14 @@ function EditUser(props) {
       mobile,
       location
     }
-    let user = [...props.data.user]
-
-    user.splice(params.id,1,data)
-
-    props.data.setUser(user)
-    navigate('/dashboard')
+   
+    let res = await axios.put(`${url}/${params.id}`,data)
+    
+    if(res.status===200)
+      navigate('/dashboard')
     
   }
+
   return<div>
     <Form>
     <Form.Group className="mb-3">

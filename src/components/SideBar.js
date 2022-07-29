@@ -38,12 +38,22 @@ function SideBar() {
 <li className="nav-item active">
     <Link to='/add-user'>
         <div className="nav-link">
-            <i class="fa-solid fa-user-plus"></i>
+            <i className="fa-solid fa-user-plus"></i>
             <span>Add User</span>
         </div>
     </Link>
 </li>
 
+<hr className="sidebar-divider"/>
+
+<li className="nav-item active">
+    <Link to='/hooks-demo'>
+        <div className="nav-link">
+            <i className="fa-solid fa-user-plus"></i>
+            <span>useReduce</span>
+        </div>
+    </Link>
+</li>
 </ul>
     </div>
   </>
